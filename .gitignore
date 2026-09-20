@@ -1,0 +1,9 @@
+postgres/data/
+api-request/postgres/data/
+
+.venv/
+__pycache__/
+airflow/logs/
+airflow/__pycache__/
+.env
+.vscode/
