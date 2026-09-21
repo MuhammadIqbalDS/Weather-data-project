@@ -1,4 +1,5 @@
 import psycopg2
+import os
 from api_request import mock_fetch_data
 
 
@@ -7,11 +8,11 @@ def connect_to_db():
 
     try:
         conn = psycopg2.connect(
-            host="localhost",
-            port=5000,
-            dbname="db",
-            user="db_user",
-            password="db_password"
+            host=os.getenv("POSTGRES_HOST", "db"),
+            port=int(os.getenv("POSTGRES_PORT", "5432")),
+            dbname=os.getenv("POSTGRES_DB", "db"),
+            user=os.getenv("POSTGRES_USER", "db_user"),
+            password=os.getenv("POSTGRES_PASSWORD", "db_password"),
         )
 
         print(conn)
@@ -89,11 +90,12 @@ def main():
         conn = connect_to_db()
         create_table(conn)
         insert_record(conn, data)
-    except exceptions as e:
+    except Exception as e:
         print(f"an error occured during execution: {e}")
     finally:
         if 'conn' in locals():
             conn.close()
             print("Database connection closed.")
 
-main()
+if __name__ == "__main__":
+    main()
